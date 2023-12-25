@@ -101,6 +101,25 @@ impl ResStackSidebar {
         let imp = self.imp();
         imp.populating.set(true);
 
+        let pages = imp.stack.borrow().pages();
+
+        let children = pages.iter::<gtk::StackPage>().flatten().map(|p| {
+            p.child()
+                .downcast::<adw::ToolbarView>()
+                .unwrap()
+                .content()
+                .unwrap()
+        });
+
+        for c in children {
+            println!(
+                "{:?} - {:?}",
+                c,
+                c.downcast_ref::<crate::ui::pages::network::ResNetwork>()
+                    .is_some()
+            );
+        }
+
         for page in imp
             .stack
             .borrow()
